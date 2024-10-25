@@ -4,99 +4,464 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lifestyle Theme</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
-    /> 
+    <link rel="stylesheet" href="style/style.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const carouselElement = document.querySelector('#carouselExampleAutoplaying');
+
+        carouselElement.addEventListener('mouseenter', function(){
+          bootstrap.Carousel.getInstance(carouselElement).pause();
+        });
+        carouselElement.addEventListener('mouseleave', function() {
+          bootstrap.Carousel.getInstance(carouselElement).cycle();
+        });
+
+        const contactForm = document.getElementById('contactForm');
+        const nameField = document.getElementById('name');
+        const emailField = document.getElementById('email');
+        const messageField = document.getElementById('message');
+        const toastLive = document.getElementById('liveToast');
+
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
+
+        function showToast(message){
+          toastLive.querySelector('.toast-body').innerText=message;
+          toastBootstrap.show();
+        }
+
+        function removeEmailError() {
+          const emailError = document.getElementById('emailError');
+          if (emailError){
+            emailError.remove();
+          }
+        }
+
+        const toastTrigger = document.getElementById('liveToastBtn')
+        const emailPattern=/^[^s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailError = document.getElementById('emailError');
+
+        if (toastTrigger) {
+          toastTrigger.addEventListener('click', () => {
+            if(nameField.value==='' || emailField.value==='' || !messageField.value==='') {
+              showToast('Please fill in all available forms');
+              return;
+            } else if (nameField.value && emailField.value && messageField.value) {
+              if (!emailPattern.test(emailField.value)){
+                const emailError = document.createElement('div');
+                emailError.className= 'alert alert-danger';
+                emailError.id = 'emailError';
+                emailError.innerText= 'Invalid email format';
+                emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
+                return;
+              }
+              nameField.value = '';
+              emailField.value = '';
+              messageField.value = '';
+              removeEmailError();
+              showToast('Your message has been successfully sent!');       
+            }
+          })
+        }
+      });
+    </script>
   </head>
   <body>
-    <nav class="container-fluid">
-      <ul>
-        <li><strong>Lifestyle Vibes</strong></li>
-      </ul>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#" role="button">Subscribe</a></li>
-      </ul>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">BLANKSPACE</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#introduction" onclick="scrollToSection('introduction')">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Gallery
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="digitalArt.html">Digital Arts</a></li>
+                <li><a class="dropdown-item" href="clay.html">Clay Arts</a></li>
+                <li><a class="dropdown-item" href="crochet.html">Crochet</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#footer" onclick="scrollToSection('footer')">Contact</a>
+            </li>
+          </ul>
+        </div>
+        <div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#introduction" onclick="scrollToSection('introduction')">About</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Gallery
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="digitalArt.html">Digital Arts</a></li>
+                  <li><a class="dropdown-item" href="clay.html">Clay Arts</a></li>
+                  <li><a class="dropdown-item" href="crochet.html">Crochet</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#footer" onclick="scrollToSection('footer')">Contact</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </nav>
+    <!-- NAVBAR END -->
 
-    <main class="container">
-      <div class="grid">
-        <section>
-          <hgroup>
-            <h2>Welcome to the Lifestyle Hub</h2>
-            <h3>Explore trends, wellness, and living your best life</h3>
-          </hgroup>
-          <p>
-            Lifestyle is all about finding balance, embracing health, and living
-            in the moment. Whether you're into fitness, mindfulness, or just
-            looking to elevate your daily routines, you've come to the right
-            place.
-          </p>
-          <figure>
-            <img
-              src="https://images.unsplash.com/photo-1507919909716-c8262e491cde?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Wellness lifestyle image from Unsplash"
-            />
-            <figcaption>
-              <a href="https://unsplash.com" target="_blank"
-                >Photo from Unsplash</a
-              >
-            </figcaption>
-          </figure>
-          <h3>Latest in Wellness</h3>
-          <p>
-            Discover the latest trends in wellness, from meditation techniques
-            to fitness tips that keep you grounded and healthy.
-          </p>
-          <h3>Explore Fashion & Trends</h3>
-          <p>
-            Stay ahead in fashion with insights into what's trending,
-            sustainable fashion tips, and more.
-          </p>
+    <!-- CAROUSEL -->
+    <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="pics/carousel-1.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="pics/carousel-2.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="pics/carousel-3.png" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <!-- CAROUSEL END -->
+
+    <div class="body-content">
+
+      <!-- WELCOMING -->
+      <section id="welcoming" class="welcoming-container">
+        <h1>Welcome to Blankspace</h1>
+        <p>
+          I feel that drawing and crafting are a part of me.
+          Everybody can make arts. You just need to do it with full of joy and
+          let your heart guide your thoughts.<br>
+          I hope everyone knows that!
+        </p>
+      </section>
+      <!-- WELCOMING END -->
+
+      <!-- QUOTES -->
+      <section id="quotes" class="quotes">
+        <figure class="text-center">
+          <blockquote class="blockquote">
+            <p><em>"The purpose of art is washing the dust of daily life off our souls"</em></p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            Pablo Picasso
+          </figcaption>
+        </figure>
+      </section>
+      <!-- QUOTES END -->
+  
+      <!-- INTRODUCTION -->
+        <section id="introduction" class="introduction">
+          <div class="introduction-container">
+            <div class="row">
+              <div class="col-md-3 left-side">
+                <img src="pics/introduction.png" alt="introduction"/>
+              </div>
+              <div class="col-md-9 right-side">
+                <h1>Hello Starshine!</h1>
+                <p>
+                  FYI, my name is Claresta Elysia, but you can just call me Clar or Elys! <br> I'm excited to welcome you to my website, which is dedicated to sharing my passion for arts and crafts with the public. My mission here is to reach out to those who might feel hesitant or unsure about showcasing their creative endeavors, especially those who believe their art isn't worthy of being shared with the world.
+                  <br>I firmly believe that everyone has the potential to create art, regardless of their current skill level or artistic experience. It’s important to understand that your art style may not be fully developed or consistent yet, and that’s completely okay! In fact, I can relate to that feeling myself. <br>Many of us experience fluctuations in motivation and inspiration; it's perfectly normal to have days when you lack the mood to create, even when it comes to the activities you once loved.
+                  In my opinion, true art comes from a place of genuine inspiration and passion. Art should be an enjoyable expression of your thoughts, feelings, and experiences, rather than a chore.
+                </p>
+              </div>       
+            </div>
+          </div>
         </section>
-      </div>
-    </main>
+      <!-- INTRODUCTION END -->
 
-    <section aria-label="Subscribe example">
-      <div class="container">
-        <article>
+      <!-- WHAT DO I DO -->
+      <section id="topics" class="topics">
+        <h1>What Do I Do?</h1>
+        <div class="topics-container">
+          <div class="row gif">
+            <div class="col-md-4 gif-container">
+              <a href="digitalArt.html">
+                <img src="gif/vid-drawing.gif" alt="drawing">
+                <p>Digital Drawing</p>
+              </a>
+            </div>
+            <div class="col-md-4 gif-container">
+              <a href="crochet.html">
+                <img src="gif/vid-crochet.gif" alt="crochet">
+                <p>Crocheting</p>
+              </a>
+            </div>
+            <div class="col-md-4 gif-container">
+              <a href="clay.html">
+                <img src="gif/vid-clay.gif" alt="clay">
+                <p>Clay Sculpturing</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- WHAT DO I DO END -->
+
+      <!-- LATEST -->
+      <section id="latest" class="latest">
+        <div class="latest-intro">
           <hgroup>
-            <h2>Join Our Community</h2>
-            <h3>Subscribe for the latest lifestyle updates</h3>
+            <h1>My Latest Artworks</h1>
+            <h5>
+              Take a look at my latest creations.<br>
+              Stay inspired as i continue to explore new ideas and bring them to life through my art!
+            </h5>
           </hgroup>
-          <form class="grid">
-            <input
-              type="text"
-              id="firstname"
-              name="firstname"
-              placeholder="First Name"
-              aria-label="First Name"
-              required
-            />
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              aria-label="Email"
-              required
-            />
-            <button type="submit" onclick="event.preventDefault()">
-              Subscribe
-            </button>
-          </form>
-        </article>
-      </div>
-    </section>
+        </div>
+        <div class="latest-container">
+          <div class="latest-content">
+            <div class="latest-grid">
+              <div class="row">
+                <div class="col-md-3">
+                  <img src="pics/latest-1.jpg" alt="outline-long" class="img-fluid">
+                </div>
+                <div class="col-md-3">
+                  <img src="pics/latest-2.jpg" alt="outline-long" class="img-fluid">
+                </div>
+                <div class="col-md-3">
+                  <img src="pics/latest-3.jpg" alt="outline-long" class="img-fluid">
+                </div>
+                <div class="col-md-3">
+                  <img src="pics/latest-4.jpg" alt="outline-long" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- LATEST END -->
 
-    <footer class="container">
-      <small
-        ><a href="#">Privacy Policy</a> •
-        <a href="#">Terms & Conditions</a></small
-      >
+      <!-- EXPLORE -->
+      <section id="explore" class="explore">
+        <div class="explore-container">
+          <div class="explore-intro">
+            <hgroup>
+              <h1>Explore Creative Tools & Techniques</h1>
+              <h5>
+                Stay ahead in your artistic journey with insights into new art tools,<br>
+                sustainable crafting materials, and tips on mastering various techniques like clay sculpting, digital drawing, and more
+              </h5>
+            </hgroup>
+          </div>
+          <div class="explore-content">
+            <figure>
+              <img
+                src="pics/illustration-drawing.jpg"
+                alt="Drawing Illustration"
+              />
+              <figcaption>
+                <a href="https://www.windowscentral.com/digital-art-beginners" target="_blank"
+                  >Photo from Windows Central</a>
+              </figcaption>
+            </figure>
+            <div class="explore-text">
+              <a>
+                Drawing has been a part of my life since I was a child. I've gone through 
+                the process of learning to draw from scratch. I may not be a 
+                professional like other well-known artists, but I want to share with you 
+                the tips I’ve learned throughout my self-taught journey in drawing.
+                <ul>
+                  <li>
+                    <h5>Start by redrawing references</h5>
+                    I'm not teaching you to tracing, okay?
+                    Tracing is like placing the reference underneath your canvas and copying 
+                    everything on your reference, that's not art.
+                    What I mean is to redraw by looking. Try to place your reference close to 
+                    your canvas and quickly shift your gaze between your canvas and the reference. 
+                    Try to make an exact replica to train your skills. This method is very effective to train your skills!
+                  </li>
+                  <li>
+                    <h5>Practice with sketches</h5>
+                    Sketching is very important. It's the foundation of everything. 
+                    You can start by learning how to build the framework of a face first. I recommend 
+                    watching the YouTube channel ‘Mmmmonexx’ Once you become proficient at shading and 
+                    linework, you'll become more comfortable with sketching.
+                  </li>
+                  <li>
+                    <h5>Study light and shadow</h5>
+                    By understanding the direction of light and shadows, your drawings will look more lifelike. You can study 
+                    this from everyday objects around you. For example, how does light from above hit a ball? 
+                    Observe its shadow, and you can practice drawing it right there on the spot.
+                  </li>
+                  <li>
+                    <h5>Learn color theory</h5>
+                    I admit, color theory can be challenging to grasp. You don’t need 
+                    to start with the more complicated aspects of it. Begin with the basics, like color 
+                    combinations. Study complementary colors and analogous colors. Understanding this will help 
+                    your artwork have a more harmonious and beautiful color scheme.
+                  </li>
+                </ul>
+              </a>
+            </div>
+            <figure>
+              <img
+                src="pics/illustration-crochet.jpg"
+                alt="Crochet Illustration"
+              />
+              <figcaption>
+                <a href="https://www.greenmatters.com/living/what-is-crochet" target="_blank"
+                  >Photo from Green Matters</a>
+              </figcaption>
+            </figure>
+            <div class="explore-text">
+              <a>
+                I started crocheting about a year ago. Crocheting takes quite a long time, but it keeps you curious 
+                about the result, so you can’t stop making it. For crocheting, you need two basic materials: a hook 
+                and yarn. Without a hook, you can't crochet. You can plan what you want to make, so you can adjust 
+                the color of the yarn you need. Crochet hooks and yarn come in different sizes, depending on how 
+                big you want your creation to be. There are also different types of yarn to consider, especially 
+                when crocheting clothing. Some yarns, like acrylic, are not suitable for making clothes. I don’t 
+                recommend making clothes for beginner crocheters, as it's quite difficult and takes a very long time! 
+                I suggest starting with small dolls first. You can easily find tutorials on YouTube for crocheting whatever 
+                you want. Soon, you'll become familiar with the following abbreviations:
+                <ul>
+                  <li> sc (single crochet)</li>
+                  <li> dc (double crochet)</li>
+                  <li> hdc (half double crochet)</li>
+                  <li> tc (triple crochet)</li>
+                  <li> inc (increase)</li>
+                  <li> dec (decrease)</li>
+                  <li> fo (fasten off)</li>
+                </ul>
+              </a>
+            </div>
+            <figure>
+              <img
+                src="pics/illustration-clay.jpg"
+                alt="Clay Illustration"
+              />
+              <figcaption>
+                <a>Original photo by me</a>
+              </figcaption>
+            </figure>
+            <div class="explore-text">
+              <a>
+                I started creating art with clay about a year ago. Making clay art isn’t as difficult as you might think.
+                First, it’s important to decide what kind of art you want to create. If you want to make a display or a sculpture, it’s better to use air-dry clay because of its solid and hard texture. However, if you want to make something simpler, you can use polymer clay. Using air-dry clay might be a bit challenging because its texture is harder compared to polymer clay.
+                <br>Of course, you’ll need the clay first. To make your work easier, I recommend purchasing clay sculpting tools, which will help you shape and carve the clay into your desired form. <br>Since it’s called "air-dry clay," this clay will harden when exposed to air, so if you want to store your leftover air-dry clay, keep it in an airtight container to prevent it from drying out completely.
+                Once you’ve finished your project, don’t dry it directly in front of a fan. Drying it too quickly will make the outer part of your project hard, while the inside remains wet, which can cause cracks. Let the air naturally dry your project at its own pace. <br>For coloring, you can mix dye directly into the clay before shaping if you’re using polymer clay, as its texture is softer and easy to mix with anything. As for air-dry clay, you can paint your project with acrylic paint once it’s dry. And I have an extra tip for air-dry clay: it's better to sand your work for a smoother and more polished result before adding color. But don’t sand polymer clay because it will remain smooth even after it dries.
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- EXPLORE END -->
+
+    </div>
+
+    <footer id="footer" class="footer">
+      <div class="form-container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="single-box">
+              <h3>BLANKSPACE</h3>
+              <a>Thank you for coming. Feel free to contact me
+                <ul>
+                  <li>
+                    <div class="detail">
+                      <div class="detail-icon">
+                        <img src="pics/instagram.png">
+                      </div>
+                      <div class="detail-text">
+                        <a>Instagram</a>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="detail">
+                      <div class="detail-icon">
+                        <img src="pics/whatsapp.png">
+                      </div>
+                      <div class="detail-text">
+                        <a>Whatsapp</a>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="detail">
+                      <div class="detail-icon">
+                        <img src="pics/gmail.png">
+                      </div>
+                      <div class="detail-text">
+                        <a>Gmail</a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <a class="location">
+                  <div class="detail">
+                    <div class="detail-icon">
+                      <img src="pics/location.png">
+                    </div>
+                    <div class="detail-text">
+                      <a>Jl. Letjen S. Parman No.1, RT.6/RW.16, Tomang, Kec. Grogol petamburan, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11440</a>
+                    </div>
+                  </div>
+                </a>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div id="contactForm" class="contactForm">
+              <div class="mb-3">
+                <label for="yourEmail" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" placeholder="Your Email">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="name" placeholder="First Name">
+              </div>
+              
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea class="form-control" id="message" rows="3" placeholder="Type Your Message Here..."></textarea>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="liveToastBtn">Submit</button>
+            <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+              <div class="toast-container align-items-center">
+                <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-body">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </footer>
   </body>
 </html>
